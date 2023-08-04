@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>table</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;1,100&family=Lugrasimo&family=Roboto&family=Roboto+Condensed&display=swap" rel="stylesheet">
+</head>
+<body>
+    <form action="" id="form">
+        <fieldset >
+            <legend><b> Personal Details</b></legend>
+            <label for="selection">Salutation</label>
+            <select name="" id="selection">
+                <option value="" selected>--None--</option>
+                <option value=""></option>
+                <option value=""></option>
+            </select>
+            <label for="name">First name:</label>
+            <input type="text" name="firstname" id="name" required>
+            <label for="last">Last name:</label>
+            <input type="text" name="lastname" id="last" required>
+            <label for="gender">Gender:</label>
+            <span class="lab">
+                <label >
+                <input class="gend" type="radio" name="gender" value="male"> Male
+                </label>
+                <label>
+                <input class="gend" type="radio" name="gender" value="female"> Female
+                </label>
+            </span>
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" required>
+            
+            <label for="birth">Date of Birth:</label>
+            <input type="date" name="date" id="birth" value="dd/mm/yyyy">
+            
+            <label for="text">Address:</label>
+            <textarea name="address" id="text" cols="50" rows="5"></textarea><br>
+            
+            <input class="btn" type="submit" value="Submit">
+            <!-- <button type="submit">Submit</button> -->
+            
+    
+        </fieldset>
+    </form>
+    
+</body>
+</html>

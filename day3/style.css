@@ -1,0 +1,84 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+body{
+  background-image: url('https://images.unsplash.com/photo-1682685796063-d2604827f7b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80');
+  background-repeat: no-repeat;
+  background-size: cover;
+  line-height: 1.7rem;
+  font-family: 'Kanit', sans-serif;
+font-family: 'Lugrasimo', cursive;
+font-family: 'Roboto', sans-serif;
+font-family: 'Roboto Condensed', sans-serif;
+}
+#form{
+  display: flex;
+  justify-content: center;
+  text-align: center;
+
+}
+fieldset{
+  padding: 10px;
+  display: grid;
+  border-radius: 16px;
+  border: 5px black solid;
+}
+input{
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+}
+legend{
+  font-size: 30px;
+}
+label{
+  align-items: center;
+  font-size: large;
+  display: flex;
+    justify-content: center;
+}
+select{
+  padding: 10px;
+  border-radius: 8px;
+}
+textarea{
+  border-radius: 8px;
+}
+.lab{
+  display: flex;
+  justify-content: space-around
+}
+.gend{
+  width: 20px;
+  height: 20px;
+}
+.btn{
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    background-color: #1877f2;
+    color: #fff;
+    cursor: pointer;
+}
+.btn:hover{
+  animation: 1 .2s shake alternate;
+}
+@keyframes shake {
+  0%{
+    transform: translateX(0px);
+  }
+  25%{
+    transform: translateX(-5px);
+  }
+  50%{
+    transform: translateX(5px);
+  }
+  75%{
+    transform: translateX(-5px);
+  }
+  100%{
+    transform: translateX(0px);
+  }
+}
