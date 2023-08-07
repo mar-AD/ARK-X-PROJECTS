@@ -1,1 +1,1 @@
-new toutube clone 99
+a simple youtube clone 99 with html and css and it is not responsive"
