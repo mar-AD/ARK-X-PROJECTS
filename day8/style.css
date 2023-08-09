@@ -1,0 +1,323 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+body{
+    /* overflow: hidden; */
+}
+.container{
+    background-color: #ecf0f0;
+}
+.bar{
+    width: 100%;
+    height: 60px;
+    background-color: #f9f9f9;
+    box-shadow: #333 0px 0px 5px 0px;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    position: fixed;
+    z-index: 999;
+}
+.logo {
+    
+}
+.search{
+    width: 600px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    position: relative;
+}
+#look{
+    width: 100%;
+    height: 100%;
+    border-radius: 6px;
+    border: #c6c6c6 2px solid;
+    padding: 5px;
+}
+#look:focus{
+    outline:none;
+}
+.fa-magnifying-glass{
+    position: absolute;
+    right: 0%;
+    color: #333;
+    font-size: small;
+    padding-right: 5px;
+}
+
+
+/* clears the ‘X’ from Chrome  */
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration { display: none; }
+
+
+.main{
+    display: grid;
+    grid-template-columns: 20% 58% 20%;
+    grid-template-rows: 1fr;
+    /* width: 100%; */
+    height: 900px;
+    padding: 60px 20px 60px 20px;
+    gap: 1%;
+}
+.left{
+    grid-row: 25%;
+    /* background-color: blue; */
+}
+.cards{
+    display: grid;
+    background-color: #fff;
+    height: 325px;
+    margin-top: 5%;
+    font-family: Arial, Helvetica, sans-serif;
+    border-radius: 6px;
+}
+.card{
+    border-bottom: 1px #c6c6c6 solid;
+    padding: 10px;
+    text-decoration: none;
+    color: #0066cc;
+}
+.card .fa-solid{
+    padding-right: 5px;
+}
+.center{
+    grid-row: 60%;
+    /* background-color: green; */
+    /* height: 100vh; */
+    text-align: center;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    margin-top: 2%;
+    overflow-y: auto;
+}
+.center::-webkit-scrollbar{
+    display: none;
+}
+.center h1{
+    font-weight: 400;
+    letter-spacing: .2rem;
+    font-size: 2.3em;
+}
+.center h1 span{
+    font-weight: 900;
+    font-size: 2.5rem;
+}
+.main-moveis{
+    /* display: grid; */
+    /* grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr; */
+    height: 15%;
+}
+.card-movie{
+    grid-row: 1fr;
+    width: 100%;
+    height: 100%;
+    padding-top: 20px;
+}
+.card-movie{
+    display: flex;
+    width: 150%;
+    height: 200%;
+    gap: 10px;
+}
+.item-mov{
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+.item-mov h3{
+    position: absolute;
+    bottom: 0;
+    margin: auto;
+    padding: 10px 0;
+    color: #fff;
+    background-color: #333;
+    width: 100%;
+}
+.item-mov::after{
+    content: "WEB-DL";
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: darkorange;
+    padding: 0 10px;
+
+}
+.mov0{
+    background-image: url(Fast-X.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.mov1{
+    background-image: url(Meg-2.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.mov2{
+    background-image: url(Mission-Impossible-Dead-Reckoning-Part-One-2023.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.mov3{
+    background-image: url(superman-and-lois-2021-1-1.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.mov4{
+    background-image: url(The-Flash.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.mov5{
+    background-image: url(Transformers-Rise-of-the-Beasts.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.star{
+    width: 40px;
+    position: absolute;
+    left: 0;
+}
+.right{
+    grid-row: 25%;
+    background-color: #ecf0f0;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 30% 70%;
+    gap: 10px;
+   
+    margin-top: 5%;
+}
+.social h2 {
+    text-align: center;
+    padding-bottom: 10px;
+    border-bottom: 1px #c6c6c6 solid;
+}
+.social{
+    width: 100%;
+    height: 100%;
+    padding-top: 10px;
+     background-color: #fff;
+}
+.social a{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    text-decoration: none;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+.social a img{
+    width: 35px;
+    display: grid;
+    padding-left: 10px;
+}
+.options{
+    display: grid;
+    grid-template-columns: 49% 49%;
+    grid-template-rows: repeat(10,10%);
+    gap: 5px;
+    margin-top: 10px;
+    background-color: #ecf0f0;
+}
+.btn{
+    background-color: #fff;
+    border-radius: 6px;
+    border: #c6c6c6 1px solid;
+    color: #0066cc;
+    font-size: 16px;
+    cursor: pointer;
+    transition: .5s;
+}
+.btn:hover{
+    background-color: #0066cc;
+    transition: .5s;
+    color: #fff;
+}
+
+@media only screen and (max-width:970px) {
+    .social a{
+        font-size: 15px;
+        /* display: grid; */
+    }
+}
+@media only screen and (max-width:940px) {
+    .social a p{
+        display: none;
+        /* display: grid; */
+    }
+    .social a{
+       justify-content: center;
+       
+    }
+    .social{
+        padding-top:0 ;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+
+    }
+    .main{
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr 1fr;
+    }
+    .center{
+        height: 85vh;
+    }
+    .social h2{
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+    .card-movie{
+        
+    }
+    .options{
+        height: 80vh;
+    }
+}
+@media only screen and (max-width:800px){
+    .search {
+        width: 400px;
+    }
+    .options{
+        height: 80vh;
+    }
+}
+@media only screen and (max-width:610px){
+    .search {
+        width: 400px;
+        padding: 0;
+    }
+    .bar{
+        display: grid;
+        justify-items: center;
+        padding: 0;
+    }
+    .card-movie {
+        display: grid;
+        grid-template-columns: 50% 50%;
+        grid-template-rows: 33% 33% 33% ;
+        height: 500px;
+        width: 100%;
+    }
+    .options{
+        display: grid;
+        grid-template-columns: 99%;
+        grid-template-rows: repeat(16,10%);
+        
+    }
+}
