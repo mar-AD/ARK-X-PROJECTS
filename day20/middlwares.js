@@ -26,24 +26,15 @@ app.use((req, res, next) => {
         item.info = timeObj
     })
     
-    console.log(`at this date ${currentDate} these are the req methouds and the url ${req.method} ${req.url}`);
+    // console.log(`at this date ${currentDate} these are the req methouds and the url ${req.method} ${req.url}`);
     next();
 })
 
 
 
-//my first error handling middleware
 
-const errorHandle = (error, req, res, next) => {
-    if (error.status === 400) {
-        res.status(400).json({ ERROR: error.message });
-    } else if (error.status === 404) {
-        res.status(404).json({ ERROR: error.message });
-    } else {
-        res.status(500).json('Something went wrong');
-    }
-};
-app.use(errorHandle);
+
+
 
 
 // show the array products
@@ -59,9 +50,7 @@ app.get('/mystore/:id',  (req, res, next)=>{
     if (productId) {
         res.json(productId);
     }else{
-        const error= new Error('product not found')
-        res.status(400);
-        return next(error);
+        return next({status: 400});
     };
 })
 
@@ -78,11 +67,23 @@ app.post('/mystore',  (req, res, next) =>{
         products.push(newproduct);
         res.json(newproduct)
     }else{
-        const error = new Error('product couldnt be added due to typo error');
-        res.status(404);
-        return next(error);
+        return next({status :404});
     }
 })
+
+
+//my first error handling middleware
+app.use((error, req, res, next) => {
+    if (error.status === 400) {
+        res.status(400).json({ error: 'product not found '});
+    } else if (error.status === 404) {
+        res.status(404).json({ error: 'you must have a problem with your new product' });    
+    } else {
+        res.status(500).json('Something went wrong');
+    }
+
+})
+
 
 app.listen(PORT, ()=>{
     console.log(`my server is runnung on ${PORT}`)
