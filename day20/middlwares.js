@@ -31,7 +31,18 @@ app.use((req, res, next) => {
 })
 
 
+function errorHandler(error, req, res, next) {
+    // console.log(error)
+    // console.log(error.status)
+    if (error.status === 404) {
+        res.status(404).json({ error: 'product not found '});
+    } else if (error.status === 400) {
+        res.status(400).json({ error: 'you must have a problem with your new product' });    
+    } else {
+        res.status(500).json({ error:'Something went wrong'});
+    }
 
+}
 
 
 
@@ -50,7 +61,7 @@ app.get('/mystore/:id',  (req, res, next)=>{
     if (productId) {
         res.json(productId);
     }else{
-        return next({status: 400});
+        return next({status: 404});
     };
 })
 
@@ -67,22 +78,13 @@ app.post('/mystore',  (req, res, next) =>{
         products.push(newproduct);
         res.json(newproduct)
     }else{
-        return next({status :404});
+        return next({status :400});
     }
 })
 
 
 //my first error handling middleware
-app.use((error, req, res, next) => {
-    if (error.status === 400) {
-        res.status(400).json({ error: 'product not found '});
-    } else if (error.status === 404) {
-        res.status(404).json({ error: 'you must have a problem with your new product' });    
-    } else {
-        res.status(500).json('Something went wrong');
-    }
-
-})
+app.use(errorHandler)
 
 
 app.listen(PORT, ()=>{
