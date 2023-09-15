@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>newSSite</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container"> 
+        <form action="/" method="POST">
+            <label for="search">Search for news:</label>
+            <input type="date" id="search" name="search" value="16-08-2023" max="2023-08-30" min="2023-08-10" required value="<%= inputVal %>">
+            <button type="submit" id="btn">Search</button>
+        </form>
+        
+        <div class="main">
+            <% if(articels != null){ %>
+            <% articels.forEach(element => { %>
+                <div class="card">
+                    <div class="img"> 
+                    <img src="<%= element.urlToImage %>" alt="imggg">
+                    </div>
+                    <div class="disc">
+                        <div class="author"><%= element.author %></div>
+                        <div class="name"><%= element.source.name %></div>
+                    </div>
+                    <div class="title"><p><%= element.title %></p></div>
+                    <div class="infos"><p><%= element.description %></p></div>
+                    <div class="url"><a href="<%= element.url %>"> Learn more ...</a></div>
+                </div>
+            <% }) %>
+            <% }else{ %>
+                <h1>Nothing found!!!!!!</h1>
+            <% } %>
+        </div>
+    </div>  
+</body>
+</html>
