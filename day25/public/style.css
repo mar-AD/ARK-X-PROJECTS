@@ -83,6 +83,7 @@
   body {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
+    height: 100vh;
 }
 
 header {
@@ -158,16 +159,15 @@ main {
 .user-activities li {
     margin-bottom: 5px;
     padding-left: 20px;
-    background-image: url('bullet.png'); /* Add a custom bullet image or use 'disc', 'circle', etc. */
-    background-repeat: no-repeat;
-    background-position: 0 5px;
+    background-color: #ccc;
+    border-radius: 8px;
 }
 
 /* Footer styles */
 footer {
   background-color: #333;
   color: #fff;
-  padding: 20px 0;
+  padding: 20px 0 0 0;
   text-align: center;
 }
 

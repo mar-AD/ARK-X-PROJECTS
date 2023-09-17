@@ -4,7 +4,10 @@ const port = 5050
 const path = require('path')
 const bodyParser = require('body-parser');
 const { body, validationResult } = require('express-validator');
-const xss = require('xss')
+const xss = require('xss');
+const fs = require('fs');
+const jwt = require('jsonwebtoken')
+const crypto = require('crypto');
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true }));
 //define ejs template
@@ -27,7 +30,7 @@ app.get('/login', (req, res) => {
 });
 
 const array = [];
-
+const secretKey = crypto.randomBytes(32).toString('hex');
 app.post('/login',[
     body('name').notEmpty().trim().escape(),
     body('email').isEmail().normalizeEmail(),
@@ -38,12 +41,13 @@ app.post('/login',[
     return res.status(400).render('errore');
 }
 const { name, email, password } = req.body;
-    let id= array.length+1
+    let id= Math.floor(Math.random()*1000)
     let time = new Date()
     let currentTime = time.toISOString().split("T")[0];
     let local = Math.floor(Math.random()*city.length);
     let locals = city[local]
         infos= {
+            id,
             name: xss(name),
             email: xss(email),
             password: xss(password),
@@ -51,6 +55,12 @@ const { name, email, password } = req.body;
             localisation: locals
         }
         array.push(infos)
+        const jsonData = JSON.stringify(array, null, 2);
+        fs.appendFile(path.join(__dirname, '/data/data.json'), jsonData, () => {});
+        const user = array.find((u) => u.name === name)
+        if (condition) {
+            
+        }
         res.redirect('/login/user')  
 })
 
