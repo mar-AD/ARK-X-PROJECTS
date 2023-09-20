@@ -23,68 +23,57 @@ const users = [
   { id: 2, username: 'admin', password: 'admin123', role: 'admin' },
 ];
 
-
-
+// Routes
 app.get('/', (req, res) => {
   res.render('index', { csrfToken: 'req.csrfToken()' });
 });
 
-app.post('/login',
-[
+app.post('/login', [
   body('username').notEmpty().trim().escape(),
-  body('password').isLength({min: 6})
+  body('password').isLength({ min: 6 })
 ], (req, res) => {
-  // Validate and authenticate the user
-  // Implement appropriate validation and secure authentication mechanisms here
-  // For simplicity, you can use a hardcoded username and password for demonstration purposes
-  const err = validationResult(req)
+  const err = validationResult(req);
   if (!err.isEmpty()) {
     res.redirect('/');
   }
   const { username, password } = req.body;
-  
-  //generate JWT for the users username and passwared
-  const user = users.find((u)=> u.username === username && u.password === password)
+
+  const user = users.find((u) => u.username === username && u.password === password);
   if (user) {
     const token = jwt.sign({ userId: user.id, userRole: user.role }, secretKey);
-  
-    // Store the token in the user's session
-    req.session.jwtToken = token;
-  
+    console.log({token})
+    // Set a cookie to indicate authentication
+    res.cookie('authToken', token);
+    
     req.session.isAuthenticated = true;
     res.redirect('/dashboard');
   } else {
-    res.status(404).send({ error: 'the password or username are uncorrect' });
+    res.status(404).send({ error: 'the username or password are not correct' });
   }
 });
 
-
-
 app.get('/dashboard', (req, res) => {
-  // Check if there's a JWT token in the user's session
-  const jwtToken = req.session.jwtToken;
-
+  // Check if the 'authToken' cookie exists
+if (req.cookies.authToken) {
+  const token = req.cookies.authToken;
+    // console.log(req.cookies.authToken)
   // Verify and decode the JWT token
-  if (!jwtToken) {
-    return res.status(401).json({ message: 'Unauthorized' });
-  }
-
-  jwt.verify(jwtToken, secretKey, (err, decoded) => {
+  jwt.verify(token, secretKey, (err, decoded) => {
     if (err) {
       return res.status(403).json({ message: 'Access denied' });
     }
-
-    // Check if the user has the 'admin' role
-    if (decoded.userRole === 'admin') {
-      // User is authenticated as an admin; you can access user data here via `decoded`
-      const { userId, username } = decoded;
-      // console.log({ userId, username });
+    // if User is authenticated ill use user data via decoded`
+    const { userId, userRole } = decoded;
+    if (userRole === 'admin') {
       res.render('dashboard');
     } else {
-      // User does not have the 'admin' role, deny access
-      return res.status(403).send({ error: 'You are not allowed to access this page; it is only for admins' })
+      res.status(403).send({ error: 'You are not allowed to access this page; it is only for admins' });
     }
-  })
+  });
+} else {
+  res.status(401).json({ message: 'Unauthorized' });
+}
+
 });
 
 
@@ -98,7 +87,112 @@ app.get('/dashboard', (req, res) => {
 //     res.redirect('/');
 //   }
 // });
- 
 app.listen(3000, () => {
   console.log('Server started on port 3000');
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// app.get('/', (req, res) => {
+//   res.render('index', { csrfToken: 'req.csrfToken()' });
+// });
+
+// app.post('/login',
+// [
+//   body('username').notEmpty().trim().escape(),
+//   body('password').isLength({min: 6})
+// ], (req, res) => {
+//   // Validate and authenticate the user
+//   // Implement appropriate validation and secure authentication mechanisms here
+//   // For simplicity, you can use a hardcoded username and password for demonstration purposes
+//   const err = validationResult(req)
+//   if (!err.isEmpty()) {
+//     res.redirect('/');
+//   }
+//   const { username, password } = req.body;
+  
+//   //generate JWT for the users username and passwared
+//   const user = users.find((u)=> u.username === username && u.password === password)
+//   if (user) {
+//     const token = jwt.sign({ userId: user.id, userRole: user.role }, secretKey);
+  
+//     // Store the token in the user's session
+//     req.session.jwtToken = token;
+  
+//     req.session.isAuthenticated = true;
+//     res.redirect('/dashboard');
+//   } else {
+//     res.status(404).send({ error: 'the password or username are uncorrect' });
+//   }
+// });
+
+
+
+// app.get('/dashboard', (req, res) => {
+//   // Check if there's a JWT token in the user's session
+//   const jwtToken = req.session.jwtToken;
+
+//   // Verify and decode the JWT token
+//   if (!jwtToken) {
+//     return res.status(401).json({ message: 'Unauthorized' });
+//   }
+
+//   jwt.verify(jwtToken, secretKey, (err, decoded) => {
+//     if (err) {
+//       return res.status(403).json({ message: 'Access denied' });
+//     }
+
+//     // Check if the user has the 'admin' role
+//     if (decoded.userRole === 'admin') {
+//       // User is authenticated as an admin; you can access user data here via `decoded`
+//       const { userId, username } = decoded;
+//       // console.log({ userId, username });
+//       res.render('dashboard');
+//     } else {
+//       // User does not have the 'admin' role, deny access
+//       return res.status(403).send({ error: 'You are not allowed to access this page; it is only for admins' })
+//     }
+//   })
+// });
+
+
+
+
+// // app.get('/dashboard', (req, res) => {
+// //   // Secure the dashboard route to only allow authenticated users
+// //   if (req.session.isAuthenticated) {
+// //     res.render('dashboard');
+// //   } else {
+// //     res.redirect('/');
+// //   }
+// // });
+
+// app.listen(3000, () => {
+//   console.log('Server started on port 3000');
+// });
