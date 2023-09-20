@@ -1,34 +1,32 @@
 const express = require('express');
 const session = require('express-session');
-const cookieParser = require('cookie-parser')
-const csurf = require('csurf');
+const cookieParser = require('cookie-parser'); // Add cookie-parser middleware
+const csurf = require('csrf');
 const { body, validationResult } = require('express-validator');
 const path = require('path');
-const bodyParser = require('body-parser')
-const  crypto = require('crypto');
+const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
-const xss = require('xss-clean') // this to prevent someone to enter scripts liks html in the user input
-// const mongoSanitize = ('express-mongo-sanitize') // this to prevent sql and nosql injuctions // we need to connect ith monodb first
+const xss = require('xss-clean');
 const app = express();
-const secretKey = crypto.randomBytes(32).toString('hex');
-// Middleware
+const secretKey = '1c81da0609e0cbc608e98cd0c36d63d4a24483f4a583bb17cf8710a3aa8c6045';
+
 app.use(express.urlencoded({ extended: false }));
 app.use(session({ secret: secretKey, resave: false, saveUninitialized: false }));
-app.use(cookieParser());
+app.use(cookieParser()); // Use cookie-parser middleware
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, '/views'))
-app.use(csurf({ cookie: true }));
+app.set('views', path.join(__dirname, '/views'));
 app.use(express.json());
 app.use(xss());
-// app.use(mongoSanitize())
+
 const users = [
   { id: 1, username: 'user1', password: 'password1', role: 'user' },
   { id: 2, username: 'admin', password: 'admin123', role: 'admin' },
 ];
 
-// Routes
+
+
 app.get('/', (req, res) => {
-  res.render('index', { csrfToken: req.csrfToken() });
+  res.render('index', { csrfToken: 'req.csrfToken()' });
 });
 
 app.post('/login',
@@ -46,43 +44,60 @@ app.post('/login',
   const { username, password } = req.body;
   
   //generate JWT for the users username and passwared
-  // jwt.sign({ username, password }, secretKey);
   const user = users.find((u)=> u.username === username && u.password === password)
-  if (username === user.username && password === user.password) {
+  if (user) {
+    const token = jwt.sign({ userId: user.id, userRole: user.role }, secretKey);
+  
+    // Store the token in the user's session
+    req.session.jwtToken = token;
+  
     req.session.isAuthenticated = true;
     res.redirect('/dashboard');
-    // res.json({ token });
   } else {
-    res.redirect('/');
+    res.status(404).send({ error: 'the password or username are uncorrect' });
   }
-});
-
-
-
-app.get('/login', (req, res) => {
-  const token = req.headers.authorization; // JWT sent by the client
-
-  // Verify and decode the JWT
-  jwt.verify(token, secretKey, (err, { username, password }) => {
-    if (err) {
-      return res.status(403).json({ message: 'Access denied' });
-    }
-
-    // User is authenticated; you can access user data here
-    console.log({ username, password });
-  });
 });
 
 
 
 app.get('/dashboard', (req, res) => {
-  // Secure the dashboard route to only allow authenticated users
-  if (req.session.isAuthenticated) {
-    res.render('dashboard');
-  } else {
-    res.redirect('/');
+  // Check if there's a JWT token in the user's session
+  const jwtToken = req.session.jwtToken;
+
+  // Verify and decode the JWT token
+  if (!jwtToken) {
+    return res.status(401).json({ message: 'Unauthorized' });
   }
+
+  jwt.verify(jwtToken, secretKey, (err, decoded) => {
+    if (err) {
+      return res.status(403).json({ message: 'Access denied' });
+    }
+
+    // Check if the user has the 'admin' role
+    if (decoded.userRole === 'admin') {
+      // User is authenticated as an admin; you can access user data here via `decoded`
+      const { userId, username } = decoded;
+      // console.log({ userId, username });
+      res.render('dashboard');
+    } else {
+      // User does not have the 'admin' role, deny access
+      return res.status(403).send({ error: 'You are not allowed to access this page; it is only for admins' })
+    }
+  })
 });
+
+
+
+
+// app.get('/dashboard', (req, res) => {
+//   // Secure the dashboard route to only allow authenticated users
+//   if (req.session.isAuthenticated) {
+//     res.render('dashboard');
+//   } else {
+//     res.redirect('/');
+//   }
+// });
  
 app.listen(3000, () => {
   console.log('Server started on port 3000');
