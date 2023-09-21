@@ -6,7 +6,8 @@ const { body, validationResult } = require('express-validator');
 const path = require('path');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
-const xss = require('xss')
+const xss = require('xss');
+const bcrypt = require('bcrypt')
 const app = express();
 const secretKey = '1c81da0609e0cbc608e98cd0c36d63d4a24483f4a583bb17cf8710a3aa8c6045';
 
@@ -19,7 +20,7 @@ app.use(express.json());
 
 
 const users = [
-  { id: 1, username: 'user1', password: 'password1', role: 'user' },
+  { id: 1, username: 'user1', password: 'password1', role: 'user'  },
   { id: 2, username: 'admin', password: 'admin123', role: 'admin' },
 ];
 
@@ -41,11 +42,28 @@ app.post('/login', [
       username: xss(username),
       password: xss(password)
     }
-    console.log(users)
   const user = users.find((u) => u.username === username && u.password === password);
   if (user) {
     const token = jwt.sign({ userId: user.id, userRole: user.role }, secretKey);
     console.log({token})
+
+    //hash the password
+    bcrypt.genSalt(10, (err, salt) => {
+      if (err) {
+        console.error(err);
+      } else {
+        bcrypt.hash(user.password, salt, (err, hash) => {
+          if (err) {
+            console.error(err);
+          } else {
+            console.log(hash);
+            users.push({hashed:hash})
+            console.log(users);
+          }
+        });
+      }
+    });
+    
     // Set a cookie to indicate authentication
     res.cookie('authToken', token);
     
