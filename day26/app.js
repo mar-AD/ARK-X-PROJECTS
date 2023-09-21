@@ -6,7 +6,7 @@ const { body, validationResult } = require('express-validator');
 const path = require('path');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
-const xss = require('xss-clean');
+const xss = require('xss')
 const app = express();
 const secretKey = '1c81da0609e0cbc608e98cd0c36d63d4a24483f4a583bb17cf8710a3aa8c6045';
 
@@ -16,7 +16,7 @@ app.use(cookieParser()); // Use cookie-parser middleware
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/views'));
 app.use(express.json());
-app.use(xss());
+
 
 const users = [
   { id: 1, username: 'user1', password: 'password1', role: 'user' },
@@ -37,7 +37,11 @@ app.post('/login', [
     res.redirect('/');
   }
   const { username, password } = req.body;
-
+    const securedData= {
+      username: xss(username),
+      password: xss(password)
+    }
+    console.log(users)
   const user = users.find((u) => u.username === username && u.password === password);
   if (user) {
     const token = jwt.sign({ userId: user.id, userRole: user.role }, secretKey);
@@ -73,6 +77,14 @@ if (req.cookies.authToken) {
 } else {
   res.status(401).json({ message: 'Unauthorized' });
 }
+
+
+// Logout route
+app.get('/logout', (req, res) => {
+  // Clear the 'authToken' cookie
+  res.clearCookie('authToken');
+  res.redirect('/');
+});
 
 });
 
@@ -180,7 +192,12 @@ app.listen(3000, () => {
 //     }
 //   })
 // });
-
+// Logout route
+// app.get('/logout', (req, res) => {
+//   // destroy the user's sesson 
+//   req.session.destroy();
+//   res.redirect('/');
+// });
 
 
 
